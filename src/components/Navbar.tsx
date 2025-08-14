@@ -1,5 +1,4 @@
 import { useActiveSection } from '../hooks/useActiveSection';
-import { ThemeToggle } from './ThemeToggle';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 
