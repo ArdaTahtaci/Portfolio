@@ -1,0 +1,315 @@
+name: Portfolio Website (React + Vite + TypeScript + Tailwind)
+version: 0.1.0
+created: 2025-08-13
+reference_style:
+  url: ykesx.github.io
+  cues:
+    - minimal, clean layout with ample negative space
+    - dark-first theme with subtle contrast accents
+    - large hero typography with concise copy
+    - smooth, unobtrusive section transitions
+    - restrained color use and consistent spacing scale
+principles:
+  - accessibility-first (semantic HTML, keyboard nav, focus-visible)
+  - content-driven design (copy and projects lead visuals)
+  - performance-conscious (avoid heavy assets, lazy-load images)
+  - mobile-first responsive layout
+  - reusable, composable components
+  - type-safety and linted codebase
+
+stack:
+  framework: React 18
+  bundler: Vite
+  language: TypeScript (strict)
+  styling: Tailwind CSS (class strategy)
+  animation: Framer Motion
+  icons: Lucide or Heroicons
+  deployment: GitHub Pages (Actions workflow)
+
+information_architecture:
+  sections_order:
+    - home
+    - about
+    - projects
+    - contact
+  nav:
+    behavior:
+      - sticky top bar with backdrop blur
+      - smooth scroll to section ids
+      - active link highlight based on scroll position
+
+layout_and_design:
+  container:
+    max_width: 1080px
+    gutters: responsive (px-4 on mobile -> px-6/8 on desktop)
+    grid: 12-col responsive utilities
+  spacing_scale: Tailwind default with custom step for 72/84/96
+  radius_scale: md=8px, lg=12px, xl=16px (via Tailwind theme extend)
+  shadows: soft ambient for cards in light; subtle border in dark
+  palette:
+    mode: dark_default
+    colors:
+      bg: "#0b0f14"
+      surface: "#0f141a"
+      text_primary: "#e6edf3"
+      text_secondary: "#9fb1c1"
+      accent: "#60a5fa"   # sky-400-like
+      accent_dim: "#2563eb" # blue-600-like
+      border: "#1f2a37"
+      success: "#22c55e"
+      warning: "#f59e0b"
+      error: "#ef4444"
+  typography:
+    font_family_primary: "Inter, ui-sans-serif, system-ui"
+    font_family_display: "Space Grotesk, ui-sans-serif"
+    sizes:
+      hero: text-5xl md:text-7xl leading-tight
+      h2: text-2xl md:text-3xl
+      body: text-base md:text-lg
+
+routing_and_scroll:
+  approach: single_page_ids
+  behavior:
+    - CSS scroll-behavior: smooth (global)
+    - controlled offset for sticky header
+    - focus management: move focus to section heading on nav click
+
+state_and_theming:
+  theme_mode:
+    default: dark
+    toggle: ThemeToggle component (stores in localStorage, respects prefers-color-scheme)
+    tailwind_strategy: class
+
+animations:
+  in_view:
+    library: Framer Motion (useInView + motion components)
+    defaults:
+      fade_up:
+        initial: { opacity: 0, y: 16 }
+        animate: { opacity: 1, y: 0 }
+        transition: { duration: 0.6, ease: easeOut }
+      fade_in:
+        initial: { opacity: 0 }
+        animate: { opacity: 1 }
+        transition: { duration: 0.5 }
+  interactions:
+    nav_hover: subtle underline grow
+    button_press: scale 0.98 micro-interaction
+
+content_model:
+  types:
+    Project:
+      - id: string
+      - title: string
+      - description: string
+      - tech: string[]
+      - image: string  # local path or url
+      - links:
+          github: string|null
+          live: string|null
+      - featured: boolean
+    SocialLink:
+      - id: string
+      - label: string
+      - url: string
+      - icon: string   # icon key
+    Skill:
+      - id: string
+      - label: string
+      - level: string  # optional tag/badge
+    Profile:
+      - name: string
+      - role: string
+      - tagline: string
+      - bio: string
+      - email: string
+      - location: string
+  files:
+    - src/data/profile.ts
+    - src/data/projects.ts
+    - src/data/socials.ts
+    - src/data/skills.ts
+
+project_structure:
+  src_dirs:
+    - src/assets
+    - src/components
+    - src/sections
+    - src/data
+    - src/hooks
+    - src/lib
+    - src/styles
+    - src/types
+  key_files:
+    - src/App.tsx
+    - src/main.tsx
+    - src/index.css
+    - tailwind.config.ts
+    - postcss.config.js
+    - vite.config.ts
+    - .github/workflows/deploy.yml
+
+components:
+  atoms:
+    - Button
+    - Icon
+    - SectionHeading
+    - Badge
+  molecules:
+    - Navbar
+    - ThemeToggle
+    - ProjectCard
+    - SocialIconLink
+    - SkillsGrid
+  sections:
+    - HeroSection
+    - AboutSection
+    - ProjectsSection
+    - ContactSection
+  utilities:
+    - InViewFade
+    - useActiveSection (IntersectionObserver for nav highlight)
+
+accessibility:
+  checklist:
+    - all interactive elements reachable by keyboard
+    - visible focus ring (not removed)
+    - color contrast AA minimum
+    - alt text for images
+    - semantic landmarks (header, main, footer, nav)
+    - aria-labels where icons are links
+
+performance:
+  - use responsive images (sizes, loading=lazy)
+  - preconnect to fonts
+  - avoid large animation on scroll jank (prefers-reduced-motion support)
+
+build_and_quality:
+  typescript: strict true
+  eslint: recommended + ts plugin + react hooks rules
+  prettier: enabled
+  commit_style: conventional (optional)
+
+deployment:
+  target: GitHub Pages
+  approach: GitHub Actions -> build to dist -> deploy to gh-pages
+  vite_base: "/<REPO_NAME>/" # update after repo is known
+  scripts:
+    - build
+    - preview
+    - deploy (gh-pages action or manual push from workflow)
+  tasks:
+    - set repository homepage and base path
+    - add workflow .github/workflows/deploy.yml (on push to main)
+
+phases:
+  - id: discover
+    title: Discover & Design Direction
+    deliverables:
+      - reference notes and moodboard bullets
+      - color palette and type choices finalized
+    tasks:
+      - analyze reference style and note cues
+      - define palette and typography tokens in Tailwind theme
+      - draft wireframe for 4 sections
+    acceptance:
+      - tokens captured in tailwind config draft
+  - id: setup
+    title: Tooling & Base Setup
+    deliverables:
+      - Tailwind configured with dark mode class strategy
+      - Framer Motion installed
+      - ESLint/Prettier configured
+    tasks:
+      - install dependencies
+      - configure tailwind/postcss
+      - add base CSS with variables and scroll-behavior smooth
+      - add theme toggle scaffolding
+    acceptance:
+      - app compiles and toggles theme class on html
+  - id: implement
+    title: Sections & Components Implementation
+    deliverables:
+      - Hero, About, Projects, Contact sections
+      - Navbar with active link highlight
+      - ProjectCard with motion
+    tasks:
+      - implement atoms and molecules
+      - implement sections with placeholder data
+      - add in-view animations
+      - add data files and types
+    acceptance:
+      - all sections render with placeholder content
+      - smooth scroll works; active link highlights
+  - id: polish
+    title: Polish, A11y, Performance & Deployment
+    deliverables:
+      - fine-tuned spacing, colors, motion
+      - a11y and performance checks
+      - GitHub Pages deployment
+    tasks:
+      - add meta tags and social previews
+      - prefers-reduced-motion support
+      - optimize images
+      - configure GH Actions workflow
+    acceptance:
+      - deployed site accessible at GitHub Pages URL
+
+tasks_breakdown:
+  install:
+    - npm i -D tailwindcss postcss autoprefixer
+    - npx tailwindcss init -p
+    - npm i framer-motion lucide-react
+    - npm i -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks prettier eslint-config-prettier
+  coding:
+    - implement components listed above
+    - implement hooks: useActiveSection
+    - theme toggle with localStorage + system detection
+    - data files and types
+  deployment_steps:
+    - set vite base
+    - add deploy workflow
+    - push to main to trigger
+
+placeholders_to_fill_by_author:
+  profile:
+    name: "Your Name"
+    role: "Your Role"
+    tagline: "A short, memorable tagline"
+    bio: "1-2 paragraph bio"
+    email: "you@example.com"
+    location: "City, Country"
+  projects:
+    - title: "Project One"
+      description: "Short description"
+      tech: ["React", "TypeScript", "Tailwind"]
+      image: "/assets/project-1.png"
+      links:
+        github: "https://github.com/your/repo"
+        live: "https://example.com"
+      featured: true
+  socials:
+    - label: "GitHub"
+      url: "https://github.com/your"
+      icon: "github"
+    - label: "LinkedIn"
+      url: "https://linkedin.com/in/your"
+      icon: "linkedin"
+
+risks_and_mitigations:
+  - scrolling performance: keep animations lightweight; respect reduced motion
+  - GH Pages base path: ensure vite base configured to repo name
+  - font loading: use swap and preconnect; local fallback
+
+acceptance_criteria_summary:
+  - dark mode by default with working toggle
+  - smooth scroll nav with section highlight
+  - in-view fade/slide animations
+  - responsive from 320px -> 1440px+
+  - clean, minimal aesthetic aligned with reference
+  - deployable to GitHub Pages via single command or CI
+
+next_actions:
+  - confirm palette and typography choices
+  - confirm repo name for GH Pages base
+  - receive real content (bio, projects, socials) 
